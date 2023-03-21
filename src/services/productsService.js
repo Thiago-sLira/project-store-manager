@@ -12,7 +12,7 @@ const getProductById = async (id) => {
     return error;
   }
 
-  const [product] = await productsModel.getProductById(id);
+  const product = await productsModel.getProductById(id);
   if (!product) {
     return { type: 'PRODUCT_NOT_FOUND', message: 'Product not found' };
   }

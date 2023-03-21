@@ -12,13 +12,13 @@ const getAllProducts = async (_req, res, next) => {
 
 const getProductById = async (req, res) => {
   const { id } = req.params;
-  const { type, message } = await productsService.getProductById(id);
+  const result = await productsService.getProductById(id);
 
-  if (type) {
-    return res.status(errorMap.mapError(type)).json(message);
+  if (result.type) {
+    return res.status(errorMap.mapError(result.type)).json(result);
   }
 
-  res.status(200).json(message);
+  res.status(200).json(result.message);
 };
 
 module.exports = {
