@@ -13,12 +13,6 @@ const allProducts = [
   }
 ];
 
-const productById = {
-  id: 1,
-  name: "Martelo de Thor"
-};
-
 module.exports = {
   allProducts,
-  productById,
-}
+};
