@@ -9,11 +9,6 @@ describe('Testes de unidade do model de produtos', function() {
   it('Recuperando a lista de produtos', async function() {
     // Arrange
     sinon.stub(connection, 'execute').resolves([allProducts]);
-    // const res = {};
-    // const req = {};
-
-    // res.status = sinon.stub().returns(res);
-    // res.json = sinon.stub().returns();
 
     // Act
     const result = await productsModel.getAllProducts();
@@ -25,8 +20,10 @@ describe('Testes de unidade do model de produtos', function() {
     // Arrange
     sinon.stub(connection, 'execute').resolves([[allProducts[0]]]);
 
+    // Act
     const result = await productsModel.getProductById(1);
 
+    // Assert
     expect(result).to.be.deep.equal(allProducts[0]);
   });
 
