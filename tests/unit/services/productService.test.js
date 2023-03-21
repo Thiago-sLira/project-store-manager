@@ -35,13 +35,19 @@ describe('Testes de unidade do service de produtos', function () {
     try {
       await productsService.getProductById(99); 
     } catch (error) {
-      console.log(error);
       expect(error.message).to.be.deep.equal('Product not found');
       expect(error.type).to.be.equal(404);
     }
   });
-  it('Verificando a mensagem caso não passe um id válido', function () {
+  it('Verificando a mensagem caso não passe um id válido', async function () {
     sinon.stub(productsModel, 'getProductById').resolves(undefined);
+
+    try {
+      await productsService.getProductById('batata');
+    } catch (error) {
+      expect(error.message).to.be.deep.equal('"id" must be a number');
+      expect(error.type).to.be.equal(422);
+    }
   });
 
   afterEach(function () {

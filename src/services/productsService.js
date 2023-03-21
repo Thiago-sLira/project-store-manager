@@ -1,4 +1,6 @@
 const productsModel = require('../models/productsModel');
+const { mapError } = require('../utils/errorMap');
+const errorMessage = require('../utils/errorMessage');
 const schema = require('./validations/validationsInputValues');
 
 const getAllProducts = async () => {
@@ -9,12 +11,12 @@ const getAllProducts = async () => {
 const getProductById = async (id) => {
   const error = schema.validateId(id);
   if (error.type) {
-    return error;
+    throw error;
   }
 
   const product = await productsModel.getProductById(id);
   if (!product) {
-    return { type: 'PRODUCT_NOT_FOUND', message: 'Product not found' };
+    throw errorMessage(mapError('PRODUCT_NOT_FOUND'), 'Product not found');
   }
 
   return { type: null, message: product };
