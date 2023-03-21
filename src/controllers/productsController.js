@@ -1,4 +1,5 @@
 const productsService = require('../services/productsService');
+const errorMap = require('../utils/errorMap');
 
 const getAllProducts = async (_req, res, next) => {
   try {
@@ -9,6 +10,18 @@ const getAllProducts = async (_req, res, next) => {
   }
 };
 
+const getProductById = async (req, res) => {
+  const { id } = req.params;
+  const { type, message } = await productsService.getProductById(id);
+
+  if (type) {
+    return res.status(errorMap.mapError(type)).json(message);
+  }
+
+  res.status(200).json(message);
+};
+
 module.exports = {
   getAllProducts,
+  getProductById,
 };
