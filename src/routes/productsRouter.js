@@ -6,3 +6,5 @@ const router = express.Router();
 router.use(express.json());
 
 router.get('/', productsController.getAllProducts);
+
+module.exports = router;
