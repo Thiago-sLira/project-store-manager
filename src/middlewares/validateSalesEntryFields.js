@@ -5,7 +5,7 @@ const validateSalesEntryFields = (req, res, next) => {
     return res.status(400).json({ message: '"productId" is required' });
   }
 
-  const verifyQuantity = sales.some(({ quantity }) => !quantity);
+  const verifyQuantity = sales.some(({ quantity }) => quantity === undefined);
   if (verifyQuantity) {
     return res.status(400).json({ message: '"quantity" is required' });
   }
