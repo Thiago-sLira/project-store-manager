@@ -3,7 +3,7 @@ const sinon = require('sinon');
 const productsService = require('../../../src/services/productsService');
 
 const productsModel = require('../../../src/models/productsModel');
-const { allProducts } = require('./mocks/productsServiceMock');
+const { allProducts, newProduct } = require('./mocks/productsServiceMock');
 
 describe('Testes de unidade do service de produtos', function () {
   it('Recuperando a lista de produtos', async function () {
@@ -15,7 +15,6 @@ describe('Testes de unidade do service de produtos', function () {
     // Assert
     expect(result).to.be.deep.equal(allProducts);
   });
-
   it('Recuperando um produto pelo Id', async function () {
     // Arrange
     sinon.stub(productsModel, 'getProductById').resolves(allProducts[0]);
@@ -51,13 +50,39 @@ describe('Testes de unidade do service de produtos', function () {
   });
   it('Verificando se ao passar um nome correto, um novo produto é cadastrado', async function () {
     // Arrange
-    sinon.stub(productsModel, 'getProductById').resolves(allProducts[0]);
+    sinon.stub(productsModel, 'registerNewProduct').resolves(newProduct);
 
     // Act
-    const result = await productsService.getProductById(1);
+    const result = await productsService.registerNewProduct('ProdutoX');
 
     // Assert
-    expect(result).to.be.deep.equal(allProducts[0]);
+    expect(result).to.be.deep.equal(newProduct);
+  });
+  it('Verificando mensagem de erro caso não passe um id', async function () { 
+    // Arrange
+    sinon.stub(productsModel, 'registerNewProduct').resolves(undefined);
+    // Act
+
+    try {
+      await productsService.registerNewProduct('');
+    } catch (error) {
+      expect(error.message).to.be.deep.equal('"name" is required');
+      expect(error.type).to.be.equal(400);
+    }
+    // Assert
+  });
+  it('Verificando mensagem de erro caso não passe um id', async function () {
+    // Arrange
+    sinon.stub(productsModel, 'registerNewProduct').resolves(undefined);
+    // Act
+
+    try {
+      await productsService.registerNewProduct('Pro');
+    } catch (error) {
+      expect(error.message).to.be.deep.equal('"name" length must be at least 5 characters long');
+      expect(error.type).to.be.equal(422);
+    }
+    // Assert
   });
 
   afterEach(function () {
