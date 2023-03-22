@@ -24,7 +24,7 @@ describe('Testes de unidade do service de produtos', function () {
     const result = await productsService.getProductById(1);
 
     // Assert
-    expect(result).to.be.deep.equal({ type: null, message: allProducts[0]});
+    expect(result).to.be.deep.equal(allProducts[0]);
   });
   it('Verificando mensagem de "Not found" caso não encontre nenhum produto', async function () {
     // Arrange

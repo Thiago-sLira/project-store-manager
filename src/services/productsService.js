@@ -19,7 +19,7 @@ const getProductById = async (id) => {
     throw errorMessage(mapError('PRODUCT_NOT_FOUND'), 'Product not found');
   }
 
-  return { type: null, message: product };
+  return product;
 };
 
 module.exports = {
