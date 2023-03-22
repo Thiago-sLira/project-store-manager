@@ -49,6 +49,16 @@ describe('Testes de unidade do service de produtos', function () {
       expect(error.type).to.be.equal(422);
     }
   });
+  it('Verificando se ao passar um nome correto, um novo produto é cadastrado', async function () {
+    // Arrange
+    sinon.stub(productsModel, 'getProductById').resolves(allProducts[0]);
+
+    // Act
+    const result = await productsService.getProductById(1);
+
+    // Assert
+    expect(result).to.be.deep.equal(allProducts[0]);
+  });
 
   afterEach(function () {
     sinon.restore();
