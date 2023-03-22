@@ -22,11 +22,22 @@ const getProductById = async (id) => {
   return product;
 };
 
-const registerNewProduct = (name) => { 
+const registerNewProduct = async (name) => {
+  if (!name) {
+    throw errorMessage(mapError('NAME_IS_REQUIRED'), '"name" is required');
+  }
 
+  const error = schema.validateNameLength(name);
+  if (error.type) {
+    throw error;
+  }
+
+  const newProduct = await productsModel.registerNewProduct(name);
+  return newProduct;
 };
 
 module.exports = {
   getAllProducts,
   getProductById,
+  registerNewProduct,
 };

@@ -8,8 +8,14 @@ const validateId = (id) => {
   return { type: null, message: '' };
 };
 
+const validateName = (name) => { 
+  if (!name) return { type: 'NAME_IS_REQUIRED', message: '"name" is required' };
+
+  return { type: null, message: '' };
+};
+
 const validateNameLength = (name) => {
-  const { error } = schema.nameSchema.validate(name);
+  const { error } = schema.nameLengthSchema.validate(name);
   if (error) {
     return {
       type: mapError('NAME_LENGTH_5'),
@@ -23,4 +29,5 @@ const validateNameLength = (name) => {
 module.exports = {
   validateId,
   validateNameLength,
+  validateName,
 };
