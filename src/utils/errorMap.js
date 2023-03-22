@@ -3,7 +3,7 @@ const errorMap = {
   INVALID_VALUE: 422,
   NAME_IS_REQUIRED: 400,
   NAME_LENGTH_5: 422,
-  // TRAVEL_CONFLICT: 409,
+  QUANTITY_VALUE_INVALID: 422,
 };
 
 const mapError = (type) => errorMap[type] || 500;

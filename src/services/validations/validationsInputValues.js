@@ -20,7 +20,20 @@ const validateNameLength = (name) => {
   return { type: null, message: '' };
 };
 
+const validateQuantity = (sales) => {
+  const verifyQuantity = sales.some(({ quantity }) => Number(quantity) <= 0);
+  if (verifyQuantity) {
+    return {
+      type: mapError('QUANTITY_VALUE_INVALID'),
+      message: '"quantity" must be greater than or equal to 1',
+    };
+  }
+
+  return { type: null, message: '' };
+};
+
 module.exports = {
   validateId,
   validateNameLength,
+  validateQuantity,
 };
