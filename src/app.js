@@ -1,7 +1,7 @@
 const express = require('express');
+require('express-async-errors');
 const errorHandler = require('./middlewares/errorHandler');
 const routes = require('./routes');
-require('express-async-errors');
 
 const app = express();
 
