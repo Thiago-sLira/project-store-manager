@@ -12,7 +12,9 @@ app.get('/', (_request, response) => {
 
 app.use('/products', routes.productsRouter);
 
-// Error como último no use
+app.use('/sales', routes.salesRouter);
+
+// Error como último no app
 app.use(errorHandler);
 // não remova essa exportação, é para o avaliador funcionar
 // você pode registrar suas rotas normalmente, como o exemplo acima
