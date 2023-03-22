@@ -8,6 +8,19 @@ const validateId = (id) => {
   return { type: null, message: '' };
 };
 
+const validateNameLength = (name) => {
+  const { error } = schema.nameSchema.validate(name);
+  if (error) {
+    return {
+      type: mapError('NAME_LENGTH_5'),
+      message: '"name" length must be at least 5 characters long',
+    };
+  }
+
+  return { type: null, message: '' };
+};
+
 module.exports = {
   validateId,
+  validateNameLength,
 };

@@ -22,6 +22,10 @@ const getProductById = async (id) => {
   return product;
 };
 
+const registerNewProduct = (name) => { 
+
+};
+
 module.exports = {
   getAllProducts,
   getProductById,
