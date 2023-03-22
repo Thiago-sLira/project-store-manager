@@ -2,6 +2,7 @@ const salesModel = require('../models/salesModel');
 const { mapError } = require('../utils/errorMap');
 const errorMessage = require('../utils/errorMessage');
 const schema = require('./validations/validationsInputValues');
+const verifyProduct = require('./validations/verifyProducts');
 
 const registerNewSale = async (sales) => { 
   const quantity = schema.validateQuantity(sales);
@@ -9,7 +10,8 @@ const registerNewSale = async (sales) => {
     throw errorMessage(quantity.type, quantity.message);
   }
 
-  const product = sales.some(({ productId }) => !salesModel.findProductByID(productId));
+  const productsDB = await salesModel.getAllProducts();
+  const product = verifyProduct(sales, productsDB);
   if (product) {
     throw errorMessage(mapError('PRODUCT_NOT_FOUND'), 'Product not found');
   }
