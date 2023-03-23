@@ -18,4 +18,8 @@ describe('Testes de unidade para model de sales', function () {
     // Assert
     expect(result).to.be.deep.equal(returnSuccessNewSale);
   });
+
+  afterEach(function () {
+    sinon.restore();
+  });
 });
