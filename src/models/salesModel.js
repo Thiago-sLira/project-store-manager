@@ -19,6 +19,18 @@ const registerNewSale = async (sales) => {
   };
 };
 
+const getSaleById = () => { };
+
+const getAllSales = async () => {
+  const querySELECT = 'SELECT salpro.sale_id AS saleId, sal.date, salpro.product_id AS productId';
+  const queryFROM = 'salpro.quantity AS quantity FROM StoreManager.sales AS sal ';
+  const queryJOIN = 'INNER JOIN StoreManager.sales_products AS salpro ON sal.id = salpro.sale_id';
+  const [result] = await connection.execute(`${querySELECT}, ${queryFROM} ${queryJOIN}`);
+  return result;
+};
+
 module.exports = {
   registerNewSale,
+  getSaleById,
+  getAllSales,
 };
