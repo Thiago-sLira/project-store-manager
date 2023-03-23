@@ -86,7 +86,7 @@ describe('Testes de unidade do service de produtos', function () {
     // Assert
   });
   describe('Testes de service para atualizar um produto', function () { 
-    const updateReturn = { id: 1, name: 'Machado do Thor Stormbreaker' }
+    const updateReturn = { id: 1, name: 'Machado do Thor Stormbreaker' };
     it('Verifica se lança um erro ao não passar um name', async function () { 
       // Arrange
       sinon.stub(productsModel, 'updateProduct').resolves(undefined);

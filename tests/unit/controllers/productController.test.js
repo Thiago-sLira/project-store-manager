@@ -70,6 +70,31 @@ describe('Testes de unidade do controller de produtos', function () {
     expect(res.json).to.have.been.calledWith(newProduct);
   });
 
+  it('Verifica se retorna o status correto ao atualizar um produto', async function () {
+    // Arrange
+    const updateReturn = { id: 1, name: 'Machado do Thor Stormbreaker' };
+    sinon.stub(productsService, 'updateProduct').resolves(updateReturn);
+
+    const req = {
+      body: {
+        name: 'Machado do Thor Stormbreaker',
+      },
+      params: {
+        id: 1,
+      }
+    };
+    const res = {};
+
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns();
+    // Act
+    await productsController.updateProduct(req, res);
+
+    // Assert
+    expect(res.status).to.have.been.calledWith(200);
+    expect(res.json).to.have.been.calledWith(updateReturn);
+  });
+
   afterEach(function () {
     sinon.restore();
   });
