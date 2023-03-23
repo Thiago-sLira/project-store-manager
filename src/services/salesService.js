@@ -28,7 +28,7 @@ const getSaleById = async (id) => {
   }
 
   const sale = await salesModel.getSaleById(id);
-  if (!sale) {
+  if (!sale[0]) {
     throw errorMessage(mapError('SALE_NOT_FOUND'), 'Sale not found');
   }
 
