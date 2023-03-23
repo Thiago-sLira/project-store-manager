@@ -85,6 +85,58 @@ describe('Testes de unidade do service de produtos', function () {
     }
     // Assert
   });
+  describe('Testes de service para atualizar um produto', function () { 
+    const updateReturn = { id: 1, name: 'Machado do Thor Stormbreaker' }
+    it('Verifica se lança um erro ao não passar um name', async function () { 
+      // Arrange
+      sinon.stub(productsModel, 'updateProduct').resolves(undefined);
+      // Act
+
+      try {
+        await productsService.updateProduct(1, '');
+      } catch (error) {
+        expect(error.message).to.be.deep.equal('"name" is required');
+        expect(error.type).to.be.equal(400);
+      }
+      // Assert
+    });
+    it('Verifica se lança um erro ao passar um name com menos de 5 caracteres', async function () {
+      // Arrange
+      sinon.stub(productsModel, 'updateProduct').resolves(undefined);
+      // Act
+
+      try {
+        await productsService.updateProduct(1, 'Bat');
+      } catch (error) {
+        expect(error.message).to.be.deep.equal('"name" length must be at least 5 characters long');
+        expect(error.type).to.be.equal(422);
+      }
+      // Assert
+    });
+    it('Verifica se lança um erro ao não encontrar um produto pelo id', async function () {
+      // Arrange
+      sinon.stub(productsModel, 'updateProduct').resolves(undefined);
+      // Act
+
+      try {
+        await productsService.updateProduct(50, 'Machado do Thor Stormbreaker');
+      } catch (error) {
+        expect(error.message).to.be.deep.equal('Product not found');
+        expect(error.type).to.be.equal(404);
+      }
+      // Assert
+    });
+    it('Verifica se é possível retornar um objeto indicando que foi modificado', async function () {
+      // Arrange
+      sinon.stub(productsModel, 'updateProduct').resolves(updateReturn);
+
+      // Act
+      const result = await productsService.updateProduct(1, 'Machado do Thor Stormbreaker');
+
+      // Assert
+      expect(result).to.be.deep.equal(updateReturn);
+    });
+  });
 
   afterEach(function () {
     sinon.restore();

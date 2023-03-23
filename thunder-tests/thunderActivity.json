@@ -55,12 +55,12 @@
     "method": "PUT",
     "sortNum": 0,
     "created": "2023-03-23T20:57:04.738Z",
-    "modified": "2023-03-23T20:58:30.368Z",
+    "modified": "2023-03-23T22:11:22.747Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"names\": \"aa\"\n}",
+      "raw": "{\n  \"name\": \"s\"\n}",
       "form": []
     },
     "tests": []

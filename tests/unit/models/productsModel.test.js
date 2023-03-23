@@ -37,6 +37,17 @@ describe('Testes de unidade do model de produtos', function() {
     expect(result).to.be.deep.equal(newProduct);
   });
 
+  it('Vefifica se ocorre um update com sucesso', async function () { 
+    // Arrange
+    const updateReturn = { id: 1, name: 'Machado do Thor Stormbreaker' };
+    
+    sinon.stub(connection, 'execute').resolves(updateReturn);
+    // Act
+    const result = await productsModel.updateProduct(1, 'Machado do Thor Stormbreaker');
+    // Assert
+    expect(result).to.be.deep.equal(updateReturn);
+  });
+
   afterEach(function () {
     sinon.restore();
   });
