@@ -12,6 +12,7 @@ describe('Testes de unidade do model de produtos', function() {
 
     // Act
     const result = await productsModel.getAllProducts();
+
     // Assert
     expect(result).to.be.deep.equal(allProducts);
   });
