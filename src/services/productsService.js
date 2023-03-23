@@ -36,8 +36,28 @@ const registerNewProduct = async (name) => {
   return newProduct;
 };
 
+const updateProduct = async (id, newName) => { 
+  if (!newName) {
+    throw errorMessage(mapError('NAME_IS_REQUIRED'), '"name" is required');
+  }
+
+  const error = schema.validateNameLength(newName);
+  if (error.type) {
+    throw error;
+  }
+
+  const product = await productsModel.getProductById(id);
+  if (!product) {
+    throw errorMessage(mapError('PRODUCT_NOT_FOUND'), 'Product not found');
+  }
+
+  const upDatedProduct = await productsModel.updateProduct(id, newName);
+  return upDatedProduct;
+};
+
 module.exports = {
   getAllProducts,
   getProductById,
   registerNewProduct,
+  updateProduct,
 };
