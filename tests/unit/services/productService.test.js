@@ -28,6 +28,7 @@ describe('Testes de unidade do service de produtos', function () {
   it('Verificando mensagem de "Not found" caso não encontre nenhum produto', async function () {
     // Arrange
     sinon.stub(productsModel, 'getProductById').resolves(undefined);
+
     // Act
 
     // Assert
@@ -71,7 +72,7 @@ describe('Testes de unidade do service de produtos', function () {
     }
     // Assert
   });
-  it('Verificando mensagem de erro caso não passe um id', async function () {
+  it('Verificando mensagem de erro caso passe um nome inválido', async function () {
     // Arrange
     sinon.stub(productsModel, 'registerNewProduct').resolves(undefined);
     // Act

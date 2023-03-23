@@ -3,7 +3,7 @@ const sinon = require('sinon');
 const salesService = require('../../../src/services/salesService');
 
 const salesModel = require('../../../src/models/salesModel');
-const { wrongSaleQuantityZero, wrongSaleProductNotFound, returnSuccessNewSale, successNewSale } = require('./mocks/salesServiceMock');
+const { wrongSaleQuantityZero, wrongSaleProductNotFound, returnSuccessNewSale, successNewSale, allSales, saleById } = require('./mocks/salesServiceMock');
 
 describe('Testes de unidade de sales service', function () { 
   it('Verifica se lança um erro ao não encontrar uma chave "productId"', async function () {
@@ -18,13 +18,11 @@ describe('Testes de unidade de sales service', function () {
     // }
     // Assert
   });
-  
   it('Verifica se lança um erro ao não encontrar uma chave "quantity"', async function () { 
     // Arrange
     // Act
     // Assert
   });
-
   it('Verifica se lança um erro ao encontrar um valor "0" na chave quantity', async function () { 
     // Arrange
     sinon.stub(salesModel, 'registerNewSale').resolves(undefined);
@@ -37,7 +35,6 @@ describe('Testes de unidade de sales service', function () {
     }
     // Assert
   });
-
   it('Verifica se lança um erro ao não encontrar um produto no banco de dados', async function () { 
     // Arrange
     sinon.stub(salesModel, 'registerNewSale').resolves(undefined);
@@ -56,6 +53,53 @@ describe('Testes de unidade de sales service', function () {
     const result = await salesService.registerNewSale(successNewSale);
 
     expect(result).to.be.deep.equal(returnSuccessNewSale);
+  });
+  it('Verifica se é possível recuperar a lista de vendas', async function () { 
+    // Arrange
+    sinon.stub(salesModel, 'getAllSales').resolves(allSales);
+
+    // Act
+    const result = await salesService.getAllSales();
+
+    // Assert
+    expect(result).to.be.deep.equal(allSales);
+  });
+  it('Verifica se é possível recuperar uma venda pelo id', async function () {
+    // Arrange
+    sinon.stub(salesModel, 'getSaleById').resolves(saleById);
+
+    // Act
+    const result = await salesService.getSaleById(1);
+
+    // Assert
+    expect(result).to.be.deep.equal(saleById);
+  });
+  it('Verifica se lança um erro ao passar um id inválido', async function () {
+    // Arrange
+    sinon.stub(salesModel, 'getSaleById').resolves(undefined);
+
+    // Act
+    
+    // Assert
+    try {
+      await salesService.getSaleById('batata');
+    } catch (error) {
+      expect(error.message).to.be.deep.equal('"id" must be a number');
+      expect(error.type).to.be.equal(422);
+    }
+  });
+  it('Verifica se lança um erro caso não encontre nenhuma venda pelo id', async function () {
+    // Arrange
+    sinon.stub(salesModel, 'getSaleById').resolves([undefined]);
+
+    // Act
+    // Assert
+    try {
+      await salesService.getSaleById(50);
+    } catch (error) {
+      expect(error.message).to.be.deep.equal('Sale not found');
+      expect(error.type).to.be.equal(404);
+    }
   });
 
   afterEach(function () {
