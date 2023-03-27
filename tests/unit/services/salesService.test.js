@@ -101,6 +101,29 @@ describe('Testes de unidade de sales service', function () {
       expect(error.type).to.be.equal(404);
     }
   });
+  it('Verifica se, ao deletar uma venda, lança um erro caso não encontre nenhuma venda pelo id ao deletar', async function () {
+    // Arrange
+    sinon.stub(salesModel, 'deleteSale').resolves(undefined);
+
+    // Act
+    // Assert
+    try {
+      await salesService.deleteSale(50);
+    } catch (error) {
+      expect(error.message).to.be.deep.equal('Sale not found');
+      expect(error.type).to.be.equal(404);
+    }
+  });
+  it('Verifica se é possível deletar uma venda pelo id', async function () {
+    // Arrange
+    sinon.stub(salesModel, 'deleteSale').resolves(undefined);
+
+    // Act
+    const result = await salesService.deleteSale(1);
+
+    // Assert
+    expect(result).to.be.deep.equal(undefined);
+  });
 
   afterEach(function () {
     sinon.restore();

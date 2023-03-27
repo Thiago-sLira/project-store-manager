@@ -38,6 +38,16 @@ describe('Testes de unidade para model de sales', function () {
     // Assert
     expect(result).to.be.deep.equal(saleById);
   });
+  it('Verifica se é posśivel deletar uma venda com sucesso', async function () {
+    // Arrange
+    sinon.stub(connection, 'execute').resolves(undefined);
+
+    // Act
+    const result = await salesModel.deleteSale(1);
+
+    // Assert
+    expect(result).to.be.deep.equal(undefined);
+  });
 
   afterEach(function () {
     sinon.restore();
