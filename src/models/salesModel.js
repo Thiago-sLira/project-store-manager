@@ -37,8 +37,19 @@ const getAllSales = async () => {
   return result;
 };
 
+const deleteSale = async (id) => { 
+  const firstQuery = 'DELETE FROM StoreManager.sales_products WHERE sale_id = ?';
+  const secondQuery = 'DELETE FROM StoreManager.sales WHERE id = ?';
+  const queries = [firstQuery, secondQuery];
+
+  const promises = queries.map((query) => connection.execute(query, [id]));
+
+  await Promise.all(promises);
+};
+
 module.exports = {
   registerNewSale,
   getSaleById,
   getAllSales,
+  deleteSale,
 };
