@@ -11,6 +11,7 @@ const registerNewSale = async (sales) => {
     .map(({ productId, quantity }) =>
       connection.execute(`${queryInsertSalesProducts} ${columnsValues}`,
         [insertId, productId, quantity]));
+
   await Promise.all(promises);
 
   return {
@@ -47,9 +48,25 @@ const deleteSale = async (id) => {
   await Promise.all(promises);
 };
 
+const updateSale = async (id, saleData) => {
+  const query = `UPDATE StoreManager.sales_products 
+  SET quantity = ? WHERE sale_id = ? AND product_id = ?`;
+
+  const promises = saleData.map(({ productId, quantity }) =>
+    connection.execute(query, [quantity, id, productId]));
+  
+  await Promise.all(promises);
+
+  return {
+    saleId: id,
+    itemsUpdated: saleData,
+  };
+ };
+
 module.exports = {
   registerNewSale,
   getSaleById,
   getAllSales,
   deleteSale,
+  updateSale,
 };

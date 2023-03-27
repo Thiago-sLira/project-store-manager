@@ -48,11 +48,35 @@ const deleteSale = async (id) => {
   }
 
   await salesModel.deleteSale(id);
- };
+};
+ 
+const updateSale = async (id, saleData) => { 
+  const sale = await salesModel.getSaleById(id);
+  if (!sale[0]) {
+    throw errorMessage(mapError('SALE_NOT_FOUND'), 'Sale not found');
+  }
+
+  const quantity = schema.validateQuantity(saleData);
+  if (quantity.type) {
+    throw errorMessage(quantity.type, quantity.message);
+  }
+
+  const product = await Promise.all(saleData
+    .map(({ productId }) => productsModel.getProductById(productId)));
+
+  if (product.includes(undefined)) {
+    throw errorMessage(mapError('PRODUCT_NOT_FOUND'), 'Product not found');
+  }
+
+  const result = await salesModel.updateSale(id, saleData);
+
+  return result;
+};
 
 module.exports = {
   registerNewSale,
   getSaleById,
   getAllSales,
   deleteSale,
+  updateSale,
 };
