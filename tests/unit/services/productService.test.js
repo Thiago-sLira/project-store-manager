@@ -85,6 +85,30 @@ describe('Testes de unidade do service de produtos', function () {
     }
     // Assert
   });
+  it('Verificando se é possível deletar uma venda com sucesso', async function () { 
+    // Arrange
+    sinon.stub(productsModel, 'deleteProduct').resolves(undefined);
+
+    // Act
+    const result = await productsService.deleteProduct(1);
+
+    // Assert
+    expect(result).to.be.deep.equal(undefined);
+  });
+  it('Verificando mensagem de "Not found" caso não encontre nenhum produto', async function () {
+    // Arrange
+    sinon.stub(productsModel, 'deleteProduct').resolves(undefined);
+
+    // Act
+
+    // Assert
+    try {
+      await productsService.deleteProduct(99);
+    } catch (error) {
+      expect(error.message).to.be.deep.equal('Product not found');
+      expect(error.type).to.be.equal(404);
+    }
+  });
   describe('Testes de service para atualizar um produto', function () { 
     const updateReturn = { id: 1, name: 'Machado do Thor Stormbreaker' };
     it('Verifica se lança um erro ao não passar um name', async function () { 

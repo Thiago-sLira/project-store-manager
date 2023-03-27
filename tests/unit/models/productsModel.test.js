@@ -48,6 +48,17 @@ describe('Testes de unidade do model de produtos', function() {
     expect(result).to.be.deep.equal(updateReturn);
   });
 
+  it('Verfica se é possível deletar um produto com sucesso', async function () { 
+    // Arrange
+    sinon.stub(connection, 'execute').resolves(undefined);
+
+    // Act
+    const result = await productsModel.deleteProduct(1);
+
+    // Assert
+    expect(result).to.be.deep.equal(undefined);
+  });
+
   afterEach(function () {
     sinon.restore();
   });
