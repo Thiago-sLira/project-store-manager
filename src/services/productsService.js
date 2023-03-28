@@ -64,10 +64,22 @@ const deleteProduct = async (id) => {
   await productsModel.deleteProduct(id);
 };
 
+const findProductByQuery = async (query) => { 
+  const result = await productsModel.findProductByQuery(query);
+
+  if (!query) {
+    const resultAll = await productsModel.getAllProducts();
+    return resultAll;
+  }
+
+  return result;
+};
+
 module.exports = {
   getAllProducts,
   getProductById,
   registerNewProduct,
   updateProduct,
   deleteProduct,
+  findProductByQuery,
 };

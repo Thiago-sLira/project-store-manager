@@ -5,6 +5,8 @@ const router = express.Router();
 
 router.use(express.json());
 
+router.get('/search', productsController.findProductByQuery);
+
 router.get('/', productsController.getAllProducts);
 
 router.get('/:id', productsController.getProductById);
