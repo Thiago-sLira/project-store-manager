@@ -3,7 +3,9 @@ const sinon = require('sinon');
 const salesModel = require('../../../src/models/salesModel');
 
 const connection = require('../../../src/db/connection');
-const { returnSuccessNewSale, successNewSale, allSales, saleById } = require('./mocks/salesModelMock');
+const {
+  returnSuccessNewSale, successNewSale, allSales, saleById, saleUpdated, saleToUpdate,
+} = require('./mocks/salesModelMock');
 
 describe('Testes de unidade para model de sales', function () {
   it('Cadastrando uma nova nova venda com sucesso', async function () {
@@ -47,6 +49,16 @@ describe('Testes de unidade para model de sales', function () {
 
     // Assert
     expect(result).to.be.deep.equal(undefined);
+  });
+  it('Verifica se é posśivel atualizar uma venda com sucesso', async function () {
+    // Arrange
+    sinon.stub(connection, 'execute').resolves(saleUpdated);
+
+    // Act
+    const result = await salesModel.updateSale(1, saleToUpdate);
+
+    // Assert
+    expect(result).to.be.deep.equal(saleUpdated);
   });
 
   afterEach(function () {

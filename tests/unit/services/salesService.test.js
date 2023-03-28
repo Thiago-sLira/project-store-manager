@@ -3,7 +3,7 @@ const sinon = require('sinon');
 const salesService = require('../../../src/services/salesService');
 
 const salesModel = require('../../../src/models/salesModel');
-const { wrongSaleQuantityZero, wrongSaleProductNotFound, returnSuccessNewSale, successNewSale, allSales, saleById } = require('./mocks/salesServiceMock');
+const { wrongSaleQuantityZero, wrongSaleProductNotFound, returnSuccessNewSale, successNewSale, allSales, saleById, saleUpdated, saleToUpdate } = require('./mocks/salesServiceMock');
 
 describe('Testes de unidade de sales service', function () { 
   it('Verifica se lança um erro ao não encontrar uma chave "productId"', async function () {
@@ -123,6 +123,53 @@ describe('Testes de unidade de sales service', function () {
 
     // Assert
     expect(result).to.be.deep.equal(undefined);
+  });
+  it('Verifica se é possível atualizar uma venda pelo id', async function () {
+    // Arrange
+    sinon.stub(salesModel, 'updateSale').resolves(saleUpdated);
+
+    // Act
+    const result = await salesService.updateSale(1, saleToUpdate);
+
+    // Assert
+    expect(result).to.be.deep.equal(saleUpdated);
+  });
+  it('Verifica se lança um erro ao não encontrar um produto no banco de dados', async function () {
+    // Arrange
+    sinon.stub(salesModel, 'updateSale').resolves(undefined);
+    // Act
+    try {
+      await salesService.updateSale(1, wrongSaleProductNotFound);
+    } catch (error) {
+      expect(error.message).to.be.deep.equal('Product not found');
+      expect(error.type).to.be.equal(404);
+    }
+    // Assert
+  });
+  it('Verifica se, ao atualizar uma venda, lança um erro ao encontrar um valor "0" na chave quantity', async function () {
+    // Arrange
+    sinon.stub(salesModel, 'updateSale').resolves(undefined);
+    // Act
+    try {
+      await salesService.updateSale(1, wrongSaleQuantityZero);
+    } catch (error) {
+      expect(error.message).to.be.deep.equal('"quantity" must be greater than or equal to 1');
+      expect(error.type).to.be.equal(422);
+    }
+    // Assert
+  });
+  it('Verifica se, ao atualizar uma venda, lança um erro caso não encontre nenhuma venda pelo id', async function () {
+    // Arrange
+    sinon.stub(salesModel, 'updateSale').resolves([undefined]);
+
+    // Act
+    // Assert
+    try {
+      await salesService.updateSale(50);
+    } catch (error) {
+      expect(error.message).to.be.deep.equal('Sale not found');
+      expect(error.type).to.be.equal(404);
+    }
   });
 
   afterEach(function () {

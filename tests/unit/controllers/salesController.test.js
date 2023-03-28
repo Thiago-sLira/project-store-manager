@@ -4,7 +4,7 @@ const sinonChai = require('sinon-chai');
 const salesController = require('../../../src/controllers/salesController');
 
 const salesService = require('../../../src/services/salesService');
-const { returnSuccessNewSale, successNewSale, saleById, allSales } = require('./mocks/salesControllerMock');
+const { returnSuccessNewSale, successNewSale, saleById, allSales, saleUpdated, saleToUpdate } = require('./mocks/salesControllerMock');
 
 chai.use(sinonChai);
 
@@ -86,6 +86,28 @@ describe('Testes de unidade do controller de sales', function () {
     // Assert
     expect(res.status).to.have.been.calledWith(204);
     expect(res.json).to.have.been.calledWith();
+  });
+  it('Verifica se retorna o status correto ao atualizar uma venda', async function () {
+    // Arrange
+    sinon.stub(salesService, 'updateSale').resolves(saleUpdated);
+
+    const req = {
+      body: saleToUpdate,
+      params: {
+        id: 1,
+      }
+    };
+    const res = {};
+
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns();
+
+    // Act
+    await salesController.updateSale(req, res);
+
+    // Assert
+    expect(res.status).to.have.been.calledWith(200);
+    expect(res.json).to.have.been.calledWith(saleUpdated);
   });
 
   afterEach(function () {
